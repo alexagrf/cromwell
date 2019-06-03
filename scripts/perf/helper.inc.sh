@@ -28,14 +28,16 @@ wait_for_cromwell() {
   fi
 }
 
+# Waits for Cromwell. Works even from *outside* a google instance
 custom_wait_for_cromwell() {
 
   set +e
 
   RESULT=1
   ATTEMPTS=0
+  MAX_ATTEMPTS=20
 
-  while [ "${ATTEMPTS}" -le 10 -a "${RESULT}" -gt "0" ]
+  while [ "${ATTEMPTS}" -le "${MAX_ATTEMPTS}" -a "${RESULT}" -gt "0" ]
   do
     echo "[$(date)] Waiting for Cromwell to come up (tried ${ATTEMPTS} times so far)"
     sleep 30

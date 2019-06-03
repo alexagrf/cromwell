@@ -46,4 +46,12 @@ docker run --name perf_gcloud_$BUILD_NUMBER -v "$(pwd)"/mnt:$DOCKER_ETC_PATH --r
     --source-instance-template $INSTANCE_TEMPLATE \
     --metadata-from-file startup-script=$DOCKER_ETC_PATH/run_on_instance.sh \
     --metadata \
-        $(join ${metadata[@]})"
+        $(join ${metadata[@]})" | tee dockerResult.txt
+
+typeset CROMWELL_UNDER_TEST=$(cat dockerResult.txt | tail -n1 | awk '{print $5}' )
+
+echo "Determined that CROMWELL_UNDER_TEST=${CROMWELL_UNDER_TEST}"
+
+source scripts/perf/helper.inc.sh
+
+waitForCromwell

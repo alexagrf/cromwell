@@ -6,6 +6,8 @@ wait_for_cromwell() {
   git clone https://github.com/vishnubob/wait-for-it.git /wait-for-it
   chmod u+x /wait-for-it/wait-for-it.sh
   # Give 5 minutes to cromwell to be online
+
+  echo "[$(date)] Waiting for http://${CROMWELL_UNDER_TEST}:8000/engine/v1/version to appear..."
   /wait-for-it/wait-for-it.sh ${CROMWELL_UNDER_TEST}:8000 -t 300
   READY=$?
   if [ ${READY} -eq 0 ]

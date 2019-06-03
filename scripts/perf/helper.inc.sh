@@ -28,6 +28,49 @@ wait_for_cromwell() {
   fi
 }
 
+custom_wait_for_cromwell() {
+
+  RESULT=1
+  ATTEMPTS=0
+
+  while [ "${ATTEMPTS}" -le 10 -a "${RESULT}" -gt "0" ]
+  do
+    echo "[$(date)] Waiting for Cromwell to come up (tried 0 times)"
+    sleep 30
+    ATTEMPTS=$((ATTEMPTS + 1))
+    curl http://${CROMWELL_UNDER_TEST}:8000/engine/v1/version &>/dev/null
+    RESULT=$?
+  done
+
+  if [ "${RESULT}" -gt "0" ]
+  then
+    echo "Cromwell never came up"
+    exit 1
+  else
+    echo "Cromwell came up - woohoo"
+  fi
+
+  echo "[$(date)] Waiting for http://${CROMWELL_UNDER_TEST}:8000/engine/v1/version to appear..."
+  /wait-for-it/wait-for-it.sh ${CROMWELL_UNDER_TEST}:8000 -t 300
+  READY=$?
+  if [ ${READY} -eq 0 ]
+  then
+      # Just wait a bit longer - no rush, this is a chill VM - this is because cromwell responds to requests before being really ready...
+      sleep 30
+
+      CROMWELL_VERSION=$(curl -X GET "http://${CROMWELL_UNDER_TEST}:8000/engine/v1/version" -H "accept: application/json" | jq -r '.cromwell')
+      if [ -z ${CROMWELL_VERSION} ]
+      then
+        echo "Cromwell was up but failed to return its version, so something went wrong, shutting down"
+        shutdown
+      fi
+      export CROMWELL_VERSION
+  else
+    echo "Cromwell was not ready after 5 minutes, shutting down"
+    shutdown
+  fi
+}
+
 export_logs() {
     export REPORT_URL="gs://${GCS_REPORT_BUCKET}/${GCS_REPORT_PATH}"
 

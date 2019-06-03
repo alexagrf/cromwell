@@ -35,7 +35,7 @@ custom_wait_for_cromwell() {
 
   while [ "${ATTEMPTS}" -le 10 -a "${RESULT}" -gt "0" ]
   do
-    echo "[$(date)] Waiting for Cromwell to come up (tried 0 times)"
+    echo "[$(date)] Waiting for Cromwell to come up (tried ${ATTEMPTS} times so far)"
     sleep 30
     ATTEMPTS=$((ATTEMPTS + 1))
     curl http://${CROMWELL_UNDER_TEST}:8000/engine/v1/version &>/dev/null
@@ -44,10 +44,10 @@ custom_wait_for_cromwell() {
 
   if [ "${RESULT}" -gt "0" ]
   then
-    echo "Cromwell never came up"
+    echo "Cromwell never came up after ${ATTEMPTS} attempts"
     exit 1
   else
-    echo "Cromwell came up - woohoo"
+    echo "Cromwell came up after ${ATTEMPTS} attempts"
   fi
 }
 

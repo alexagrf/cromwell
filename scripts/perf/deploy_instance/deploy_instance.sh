@@ -53,4 +53,5 @@ echo "Determined that CROMWELL_UNDER_TEST=${CROMWELL_UNDER_TEST}"
 
 source scripts/perf/helper.inc.sh
 
+cd ~/
 wait_for_cromwell

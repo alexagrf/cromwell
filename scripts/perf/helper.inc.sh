@@ -30,6 +30,8 @@ wait_for_cromwell() {
 
 custom_wait_for_cromwell() {
 
+  set +e
+
   RESULT=1
   ATTEMPTS=0
 

@@ -1,6 +1,5 @@
 #!/bin/bash
 set -e
-set -x
 
 GCS_BUCKET=gs://cromwell-perf-test/
 
@@ -54,4 +53,4 @@ echo "Determined that CROMWELL_UNDER_TEST=${CROMWELL_UNDER_TEST}"
 
 source scripts/perf/helper.inc.sh
 
-waitForCromwell
+wait_for_cromwell

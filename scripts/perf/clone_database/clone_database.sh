@@ -31,3 +31,5 @@ docker run --name perf_sql_create_gcloud_$BUILD_NUMBER -v "$(pwd)"/mnt:$DOCKER_E
 docker run --name perf_sql_user_gcloud_$BUILD_NUMBER -v "$(pwd)"/mnt:$DOCKER_ETC_PATH --rm google/cloud-sdk:slim /bin/bash -c "\
     gcloud auth activate-service-account --key-file $DOCKER_ETC_PATH/sa.json &&\
     gcloud --project broad-dsde-cromwell-perf sql users create cromwell --instance=${CLOUD_SQL_INSTANCE_NEW_NAME} --password=${DB_PASS}"
+
+echo ""

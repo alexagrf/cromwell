@@ -1,6 +1,12 @@
 #!/bin/bash
 set -e
 
+if [ -z "${CROMWELL_INSTANCE_NAME}" ]
+then
+  echo "[$(date)] Cannot run deploy_instance without CROMWELL_INSTANCE_NAME set"
+  exit 1
+fi
+
 GCS_BUCKET=gs://cromwell-perf-test/
 
 VAULT_TOKEN=$(cat /etc/vault-token-dsde)
@@ -40,7 +46,7 @@ docker run --name perf_gcloud_$BUILD_NUMBER -v "$(pwd)"/mnt:$DOCKER_ETC_PATH --r
     --project broad-dsde-cromwell-perf \
     compute \
     instances \
-    create $BUILD_TAG \
+    create ${CROMWELL_INSTANCE_NAME} \
     --zone us-central1-c \
     --source-instance-template $INSTANCE_TEMPLATE \
     --metadata-from-file startup-script=$DOCKER_ETC_PATH/run_on_instance.sh \

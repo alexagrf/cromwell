@@ -47,7 +47,7 @@ docker run --name perf_gcloud_$BUILD_NUMBER -v "$(pwd)"/mnt:$DOCKER_ETC_PATH --r
     --metadata \
         $(join ${metadata[@]})" | tee dockerResult.txt
 
-typeset CROMWELL_UNDER_TEST=$(cat dockerResult.txt | tail -n1 | awk '{print $1}' )
+typeset CROMWELL_UNDER_TEST=$(cat dockerResult.txt | tail -n1 | awk '{print $5}' )
 
 # TODO: Error if CROMWELL_UNDER_TEST is ""
 

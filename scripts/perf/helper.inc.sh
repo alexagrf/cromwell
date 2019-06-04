@@ -48,7 +48,7 @@ custom_wait_for_cromwell() {
 
     CROMWELL_VERSION=$(echo "${CROMWELL_VERSION_JSON}" | jq -r '.cromwell')
 
-    if [ -z ${CROMWELL_VERSION} ]
+    if [ "${RESULT}" -eq "0" -a -z "${CROMWELL_VERSION}" ]
     then
       echo "Cromwell was up but failed to return its version, maybe something went wrong? Continuing waiting..."
       RESULT=1

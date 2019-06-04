@@ -63,4 +63,5 @@ source scripts/perf/helper.inc.sh
 
 custom_wait_for_cromwell
 
+mkdir -p output
 echo "CROMWELL_UNDER_TEST=${CROMWELL_UNDER_TEST}" > output/cromwell.properties
